@@ -8,7 +8,7 @@ pipeline {
     stages {        
       stage('SCM') {
          steps {
-            git 'https://github.com/Umeshfarrow/example-voting-app.git'
+            git 'https://github.com/raghavendradurgampudi/example-voting-app.git'
          }
       }
       stage('Build Project') {
@@ -39,11 +39,11 @@ pipeline {
             sudo su
             echo "Build Images"
             cd vote
-            sudo docker build -t umeshfarrow/vote-app .
+            sudo docker build -t raghavendradurgampudi/vote-app .
             cd ../result
-            sudo docker build -t umeshfarrow/result-app .
+            sudo docker build -t raghavendradurgampudi/result-app .
             cd ../worker
-            sudo docker build -t umeshfarrow/worker-app .
+            sudo docker build -t raghavendradurgampudi/worker-app .
              '''
            }
     }
@@ -52,9 +52,9 @@ pipeline {
             withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
             sh '''
             echo "Push to repository"
-            sudo docker push umeshfarrow/vote-app
-            sudo docker push umeshfarrow/result-app
-            sudo docker push umeshfarrow/worker-app
+            sudo docker push raghavendradurgampudi/vote-app
+            sudo docker push raghavendradurgampudi/result-app
+            sudo docker push raghavendradurgampudi/worker-app
             sudo usermod -a -G docker ubuntu
             sudo usermod -a -G docker root
             '''
@@ -84,7 +84,7 @@ pipeline {
             sudo su;
             docker stop vote worker result db redis;
             docker rm vote worker result db redis;
-            docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres;
+            docker rmi raghavendradurgampudi/worker-app raghavendradurgampudi/result-app raghavendradurgampudi/vote-app redis postgres;
             docker-compose up -d;
             '''*/
               }
@@ -112,7 +112,7 @@ pipeline {
      stage('Clone repository'){
          steps{
             sh '''
-            git clone https://github.com/Umeshfarrow/example-voting-app.git
+            git clone https://github.com/raghavendradurgampudi/example-voting-app.git
             '''
          }
       } 
@@ -122,11 +122,11 @@ pipeline {
          echo "Build Images"
          cd example-voting-app
          cd vote
-         docker build -t umeshfarrow/vote-app .
+         docker build -t raghavendradurgampudi/vote-app .
          cd ../result
-         docker build -t umeshfarrow/result-app .
+         docker build -t raghavendradurgampudi/result-app .
          cd ../worker
-         docker build -t umeshfarrow/worker-app .
+         docker build -t raghavendradurgampudi/worker-app .
          '''
          }
       }
@@ -144,13 +144,13 @@ pipeline {
          
          echo "Running project..."
          echo "Deploying Container Vote-app on port 5000"
-         docker run -d --name=vote -p 5000:80 --link redis:redis umeshfarrow/vote-app
+         docker run -d --name=vote -p 5000:80 --link redis:redis raghavendradurgampudi/vote-app
          
          echo "Deploying Container Result-app on port 5001"
-         docker run -d --name=result -p 5001:80 --link redis:redis --link db:db umeshfarrow/result-app
+         docker run -d --name=result -p 5001:80 --link redis:redis --link db:db raghavendradurgampudi/result-app
          
          echo "Deploying Container worker-app"
-         docker run -d --name=worker --link redis:redis --link db:db prabhavagrawal/worker-app
+         docker run -d --name=worker --link redis:redis --link db:db raghavendradurgampudi/worker-app
          '''
          }
       }*/
